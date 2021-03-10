@@ -1,8 +1,8 @@
 #include "lib_canvas.h"
 
-int lib_canvas_clear_screen(const canvas_t& canvas)
+int lib_canvas_clear_screen(const scene_type &scene)
 {
-    canvas.scene->clear();
+    scene->clear();
 
     return OK;
 }

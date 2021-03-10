@@ -23,7 +23,6 @@ int command_run(const command_t &command)
         rc = model_turn(model, command.turn_params);
         break;
     case COM_DRAW:
-        printf("befor draw %p %p\n", model.dots.arr, model.lines.arr);
         rc = model_draw(model, command.canvas);
         break;
     case COM_QUIT:

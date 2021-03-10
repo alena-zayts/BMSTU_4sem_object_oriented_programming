@@ -8,29 +8,27 @@
 #include "dots.h"
 #include "lib_canvas.h"
 
-typedef struct line line_t;
-struct line
+struct line_t
 {
     int dot_1;
     int dot_2;
 };
 
-typedef struct lines_info lines_info_t;
-struct lines_info
+struct lines_info_t
 {
     int amount;
     line_t* arr;
 };
 
-int lines_info_initialize(lines_info_t& lines_info, line_t *arr, const int &amount);
+int lines_info_initialize(lines_info_t& lines_info, line_t* const arr, const int &amount);
 
 int lines_info_check_array(const lines_info_t& lines_info);
 
-int lines_info_free_arr(const lines_info_t& lines_info);
+int lines_info_free_arr(lines_info_t& lines_info);
 
 int lines_info_input(lines_info_t& lines_info, FILE *f);
 
-int lines_info_output(const lines_info_t& lines_info, FILE *f);
+int lines_info_output(FILE *f, const lines_info_t& lines_info);
 
 int lines_draw(const lines_info_t& lines_info, const dots_info_t &dots_info, const canvas_t& canvas);
 

@@ -1,6 +1,6 @@
 #include "dots.h"
 
-int dots_info_initialize(dots_info_t& dots_info, dot_t *arr, const int amount)
+int dots_info_initialize(dots_info_t& dots_info, dot_t * const arr, const int amount)
 {
     dots_info.arr = arr;
     dots_info.amount = amount;
@@ -10,7 +10,7 @@ int dots_info_initialize(dots_info_t& dots_info, dot_t *arr, const int amount)
 
 int dots_info_check_array(const dots_info_t& dots_info)
 {
-    if (!dots_info.arr)
+    if (!dots_info.arr || !dots_info.amount)
     {
         return ERR_NO_FIGURE;
     }
@@ -21,18 +21,24 @@ int dots_info_check_array(const dots_info_t& dots_info)
 int dots_info_free_arr(dots_info_t& dots_info)
 {
     free(dots_info.arr);
+    dots_info.amount = 0;
 
     return OK;
 }
 
-int dots_info_read_amount(dots_info_t& dots_info, FILE* f)
+int dots_info_read_amount(int& amount, FILE* f)
 {
-    if (fscanf(f, "%d", &(dots_info.amount)) != 1)
+    if (!f)
+    {
+        return ERR_FILE;
+    }
+
+    if (fscanf(f, "%d", &amount) != 1)
     {
         return ERR_INPUT;
     }
 
-    if (dots_info.amount < 2)
+    if (amount < 2)
     {
         return ERR_DOTS_AMOUNT;
     }
@@ -61,6 +67,11 @@ int dots_arr_read(dot_t *dots_arr, const int& amount, FILE* f)
         return ERR_NO_FIGURE;
     }
 
+    if (!f)
+    {
+        return ERR_FILE;
+    }
+
     int rc = OK;
     for (int i = 0; (i < amount) && (rc == OK); i++)
     {
@@ -76,7 +87,12 @@ int dots_arr_read(dot_t *dots_arr, const int& amount, FILE* f)
 
 int dots_info_input(dots_info_t& dots_info, FILE* f)
 {
-    int rc = dots_info_read_amount(dots_info, f);
+    if (!f)
+    {
+        return ERR_FILE;
+    }
+
+    int rc = dots_info_read_amount(dots_info.amount, f);
     if (rc != OK)
     {
         return rc;
@@ -99,6 +115,11 @@ int dots_info_input(dots_info_t& dots_info, FILE* f)
 
 int dots_arr_output(const dot_t* dots_arr, const int& amount, FILE* f)
 {
+    if (!f)
+    {
+        return ERR_FILE;
+    }
+
     if (!dots_arr)
     {
         return ERR_NO_FIGURE;
@@ -113,14 +134,19 @@ int dots_arr_output(const dot_t* dots_arr, const int& amount, FILE* f)
     return OK;
 }
 
-int dots_info_output(const dots_info_t& dots_info, FILE* f)
+int dots_info_output(FILE* f, const dots_info_t& dots_info)
 {
+    if (!f)
+    {
+        return ERR_FILE;
+    }
+
     int rc = dots_arr_output(dots_info.arr, dots_info.amount, f);
 
     return rc;
 }
 
-int dots_arr_find_centre_x(dot_t& centre, const dot_t *dots_arr, const int amount)
+int dots_arr_find_centre_x(dot_t& centre, const dot_t *dots_arr, const int& amount)
 {
     if (!dots_arr)
     {
@@ -143,7 +169,7 @@ int dots_arr_find_centre_x(dot_t& centre, const dot_t *dots_arr, const int amoun
 
     return OK;
 }
-int dots_arr_find_centre_y(dot_t& centre, const dot_t *dots_arr, const int amount)
+int dots_arr_find_centre_y(dot_t& centre, const dot_t *dots_arr, const int& amount)
 {
     if (!dots_arr)
     {
@@ -167,7 +193,7 @@ int dots_arr_find_centre_y(dot_t& centre, const dot_t *dots_arr, const int amoun
     return OK;
 }
 
-int dots_arr_find_centre_z(dot_t& centre, const dot_t *dots_arr, const int amount)
+int dots_arr_find_centre_z(dot_t& centre, const dot_t *dots_arr, const int& amount)
 {
     if (!dots_arr)
     {
@@ -192,7 +218,7 @@ int dots_arr_find_centre_z(dot_t& centre, const dot_t *dots_arr, const int amoun
     return OK;
 }
 
-int dots_arr_find_centre(dot_t& centre, const dot_t *dots_arr, const int amount)
+int dots_arr_find_centre(dot_t& centre, const dot_t *dots_arr, const int& amount)
 {
     if (!dots_arr)
     {
@@ -213,7 +239,7 @@ int dots_arr_find_centre(dot_t& centre, const dot_t *dots_arr, const int amount)
 
     rc = dots_arr_find_centre_z(centre, dots_arr, amount);
 
-    return OK;
+    return rc;
 }
 
 int dot_shift(dot_t& dot, const shift_params_t& shifts)
@@ -268,9 +294,9 @@ int dots_info_scale(dots_info_t& dots_info, const scale_params_t& coeffs, const 
 
 int to_radians(turn_params_t& angles)
 {
-    angles.teta_x *= (PI / 180);
-    angles.teta_y *= (PI / 180);
-    angles.teta_z *= (PI / 180);
+    angles.teta_x *= (M_PI / 180);
+    angles.teta_y *= (M_PI / 180);
+    angles.teta_z *= (M_PI / 180);
 
     return OK;
 }

@@ -7,8 +7,7 @@
 #include "lines.h"
 #include "lib_canvas.h"
 
-typedef struct model model_t;
-struct model
+struct model_t
 {
     dots_info_t dots;
     lines_info_t lines;

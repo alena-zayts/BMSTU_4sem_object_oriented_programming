@@ -44,6 +44,11 @@ int model_find_centre(dot_t& centre, const dots_info_t &dots_info)
 
 int model_download(model_t& model, const char *file_name)
 {
+    if (!file_name)
+    {
+        return ERR_FILE;
+    }
+
     FILE *f = NULL;
 
     if ((f = fopen(file_name, "r")) == NULL)
@@ -53,14 +58,7 @@ int model_download(model_t& model, const char *file_name)
 
     model_t model_tmp = model_init();
 
-    int rc = model_initialize_null(model_tmp);
-    if (rc != OK)
-    {
-        fclose(f);
-        return rc;
-    }
-
-    rc = dots_info_input(model_tmp.dots, f);
+    int rc = dots_info_input(model_tmp.dots, f);
     if (rc != OK)
     {
         fclose(f);
@@ -106,6 +104,11 @@ int model_check_arrays(const model_t& model)
 
 int model_upload(const model_t& model, const char *file_name)
 {
+    if (!file_name)
+    {
+        return ERR_FILE;
+    }
+
     int rc = model_check_arrays(model);
     if (rc != OK)
     {
@@ -119,14 +122,14 @@ int model_upload(const model_t& model, const char *file_name)
         return ERR_FILE;
     }
 
-    rc = dots_info_output(model.dots, f);
+    rc = dots_info_output(f, model.dots);
     if (rc != OK)
     {
         fclose(f);
         return rc;
     }
 
-    rc = lines_info_output(model.lines, f);
+    rc = lines_info_output(f, model.lines);
 
     fclose(f);
 
@@ -141,7 +144,7 @@ int model_draw(const model_t& model, const canvas_t& canvas)
         return rc;
     }
 
-    rc = lib_canvas_clear_screen(canvas);
+    rc = lib_canvas_clear_screen(canvas.scene);
     if (rc != OK)
     {
         return rc;

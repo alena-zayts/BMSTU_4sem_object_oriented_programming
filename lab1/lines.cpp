@@ -1,6 +1,6 @@
 #include "lines.h"
 
-int lines_info_initialize(lines_info_t& lines_info, line_t *arr, const int& amount)
+int lines_info_initialize(lines_info_t& lines_info, line_t * const arr, const int& amount)
 {
     lines_info.arr = arr;
     lines_info.amount = amount;
@@ -10,7 +10,7 @@ int lines_info_initialize(lines_info_t& lines_info, line_t *arr, const int& amou
 
 int lines_info_check_array(const lines_info_t& lines_info)
 {
-    if (!lines_info.arr)
+    if (!lines_info.arr || !lines_info.amount)
     {
         return ERR_NO_FIGURE;
     }
@@ -18,21 +18,22 @@ int lines_info_check_array(const lines_info_t& lines_info)
     return OK;
 }
 
-int lines_info_free_arr(const lines_info_t& lines_info)
+int lines_info_free_arr(lines_info_t& lines_info)
 {
     free(lines_info.arr);
+    lines_info.amount = 0;
 
     return OK;
 }
 
-int lines_info_read_amount(lines_info_t& lines_info, FILE* f)
+int lines_info_read_amount(int &amount, FILE* f)
 {
-    if ((fscanf(f, "%d", &lines_info.amount)) != 1)
+    if ((fscanf(f, "%d", &amount)) != 1)
     {
         return ERR_INPUT;
     }
 
-    if (lines_info.amount < 1)
+    if (amount < 1)
     {
         return ERR_LINES_AMOUNT;
     }
@@ -61,6 +62,11 @@ int lines_arr_read(line_t *lines_arr, const int& amount, FILE* f)
         return ERR_NO_FIGURE;
     }
 
+    if (!f)
+    {
+        return ERR_FILE;
+    }
+
     int rc = OK;
     for (int i = 0; (i < amount) && (rc == OK); i++)
     {
@@ -76,7 +82,12 @@ int lines_arr_read(line_t *lines_arr, const int& amount, FILE* f)
 
 int lines_info_input(lines_info_t& lines_info, FILE* f)
 {
-    int rc = lines_info_read_amount(lines_info, f);
+    if (!f)
+    {
+        return ERR_FILE;
+    }
+
+    int rc = lines_info_read_amount(lines_info.amount, f);
     if (rc != OK)
     {
         return rc;
@@ -99,6 +110,11 @@ int lines_info_input(lines_info_t& lines_info, FILE* f)
 
 int lines_arr_output(const line_t* lines_arr, const int& amount, FILE* f)
 {
+    if (!f)
+    {
+        return ERR_FILE;
+    }
+
     if (!lines_arr)
     {
         return ERR_NO_FIGURE;
@@ -113,8 +129,13 @@ int lines_arr_output(const line_t* lines_arr, const int& amount, FILE* f)
     return OK;
 }
 
-int lines_info_output(const lines_info_t& lines_info, FILE* f)
+int lines_info_output(FILE* f, const lines_info_t& lines_info)
 {
+    if (!f)
+    {
+        return ERR_FILE;
+    }
+
     int rc = lines_arr_output(lines_info.arr, lines_info.amount, f);
 
     return rc;
@@ -122,6 +143,11 @@ int lines_info_output(const lines_info_t& lines_info, FILE* f)
 
 int line_draw(const line_t& line, const dot_t* const dots_arr, const canvas_t& canvas)
 {
+    if (!dots_arr)
+    {
+        return ERR_NO_FIGURE;
+    }
+
     dot_t dot1 = dots_arr[line.dot_1];
     dot_t dot2 = dots_arr[line.dot_2];
 

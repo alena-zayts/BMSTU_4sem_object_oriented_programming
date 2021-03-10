@@ -11,8 +11,7 @@
 
 #include "model.h"
 
-typedef struct command command_t;
-struct command
+struct command_t
 {
     int com_number;
     union
