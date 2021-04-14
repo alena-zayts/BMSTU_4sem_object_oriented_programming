@@ -5,12 +5,6 @@
 template <typename T>
 class ListNode
 {
-private:
-    // информационная часть соответствующего типа
-    T data;
-    // указатель на следующий узел
-    std::shared_ptr<ListNode<T>> next;
-
 public:
     // конструктор по умолчанию-обнуление
     ListNode();
@@ -41,6 +35,12 @@ public:
     bool operator<(const ListNode<T> &node) const;
     bool operator>=(const ListNode<T> &node) const;
     bool operator<=(const ListNode<T> &node) const;
+
+private:
+    // информационная часть соответствующего типа
+    T data;
+    // указатель на следующий узел
+    std::shared_ptr<ListNode<T>> next;
 };
 
 #endif

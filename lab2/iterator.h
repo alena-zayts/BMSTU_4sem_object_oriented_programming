@@ -8,10 +8,6 @@ template <typename T>
 //                                        категория итератора, значения
 class ListIterBase : public std::iterator<std::input_iterator_tag, T>
 {
-protected:
-    //std::weak_ptr может наблюдать и получать доступ к тому же объекту, на который указывает std::shared_ptr
-    // (или другой std::weak_ptr), но не считаться владельцем этого объекта.
-    std::weak_ptr<ListNode<T>> ptrCur;
 public:
     // конструктор по умолчанию-нулевой указатель
     ListIterBase();
@@ -37,6 +33,11 @@ public:
 
     // проверка на нахождение в границах
     bool checkRange() const;
+
+protected:
+    //std::weak_ptr может наблюдать и получать доступ к тому же объекту, на который указывает std::shared_ptr
+    // (или другой std::weak_ptr), но не считаться владельцем этого объекта.
+    std::weak_ptr<ListNode<T>> ptrCur;
 };
 
 

@@ -5,7 +5,6 @@
 
 using namespace std;
 
-#include "base.hpp"
 #include "list.hpp"
 #include "node.hpp"
 #include "iterator.hpp"

@@ -6,9 +6,6 @@
 // базовый класс ошибок
 class ListErrorBase : public std::exception
 {
-    // чтобы производные классы имели доступ
-protected:
-    std::string errorMessage;
 public:
     // явный конструктор-формирование сообщения об ошибке
     explicit ListErrorBase(
@@ -30,6 +27,10 @@ public:
     {
         return errorMessage.c_str();
     }
+
+// чтобы производные классы имели доступ
+protected:
+    std::string errorMessage;
 };
 
 // частные ошибки наследуют все от базовой

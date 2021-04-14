@@ -207,10 +207,21 @@ List<T> &List<T>::operator=(std::initializer_list<T> someList)
     return *this;
 }
 
+// с 1 итератором
+template <typename T>
+template <typename T_>
+List<T> &operator=(T_ begin);
+{
+    for (auto it = begin; it != end; it++)
+    {
+        this->append(*it);
+    }
+}
+
 // перегрузка оператора сложения и
 // add~+data
 template <typename T>
-List<T> &List<T>::add(const T &data) const
+List<T> List<T>::add(const T &data) const
 {
     List<T> newList(*this); // чтобы не испортить существующий
     newList.append(data);
@@ -225,7 +236,7 @@ List<T> List<T>::operator+(const T &data) const
 
 // addlist~+list
 template <typename T>
-List<T> &List<T>::addlist(const List<T> &someList) const
+List<T> List<T>::addlist(const List<T> &someList) const
 {
     List<T> newList(*this);
     newList.extend(someList);
@@ -447,18 +458,6 @@ template <typename T>
 ConstListIter<T> List<T>::c_end() const
 {
     return ConstListIter<T>(tail);
-}
-
-template <typename T>
-ConstListIter<T> List<T>::begin() const
-{
-    return c_begin();
-}
-
-template <typename T>
-ConstListIter<T> List<T>::end() const
-{
-    return c_end();
 }
 
 // вывод информации о списке

@@ -15,21 +15,6 @@ template <typename T>
 // наследование public-ничего не меняется
 class List : public ListBase
 {
-private:
-    // указатель на голову
-    std::shared_ptr<ListNode<T>> head;
-    // указатель на хвост
-    std::shared_ptr<ListNode<T>> tail;
-
-    // создание нового узла и вставка перед
-    std::shared_ptr<ListNode<T>> initNode(const T &data, std::shared_ptr<ListNode<T>> ptrNode = nullptr);
-    // добавление списка в конец существующего
-    void addList(const List<T> &ListToAdd);
-    // сравнение всех узлов 2 списков
-    bool isEqualTo(const List<T> &someList) const;
-    // проверка на пустоту
-    bool isEmpty() const;
-
 public:
     // конструктор по умолчанию-обнуление
     List();
@@ -54,13 +39,16 @@ public:
     List<T> &operator=(const List<T> &someList);
     List<T> &operator=(List<T> &&someList);
     List<T> &operator=(std::initializer_list<T> someList);
+    // с 1 итератором
+    template <typename T_>
+    List<T> &operator=(T_ begin);
 
     // перегрузка оператора сложения и
     // add~+data
-    List<T> &add(const T &data) const;
+    List<T> add(const T &data) const;
     List<T> operator+(const T &data) const;
     // addlist~+list
-    List<T> &addlist(const List<T> &someList) const;
+    List<T> addlist(const List<T> &someList) const;
     List<T> operator+(const List<T> &somelist) const;
 
     // перегрузка оператора сложения с присваиванием и
@@ -90,12 +78,21 @@ public:
     // константные итераторы
     ConstListIter<T> c_begin() const;
     ConstListIter<T> c_end() const;
-    ConstListIter<T> begin() const;
-    ConstListIter<T> end() const;
-};
 
-// вывод информации о списке
-template <typename T>
-std::ostream &operator<<(std::ostream &stream, List<T> &list);
+private:
+    // указатель на голову
+    std::shared_ptr<ListNode<T>> head;
+    // указатель на хвост
+    std::shared_ptr<ListNode<T>> tail;
+
+    // создание нового узла и вставка перед
+    std::shared_ptr<ListNode<T>> initNode(const T &data, std::shared_ptr<ListNode<T>> ptrNode = nullptr);
+    // добавление списка в конец существующего
+    void addList(const List<T> &ListToAdd);
+    // сравнение всех узлов 2 списков
+    bool isEqualTo(const List<T> &someList) const;
+    // проверка на пустоту
+    bool isEmpty() const;
+};
 
 #endif
