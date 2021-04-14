@@ -169,28 +169,30 @@ void test_removal()
 
 void test_other()
 {
-    cout << "Other" << endl;
-
     try
     {
         List<int> list0({3, 1, 2, 3});
         List<int> list1({2, 1, 2});
 
         cout << "<getLen()>" << endl;
+        cout << list0 << endl;
         cout << list0.getLen() << endl;
+        cout << list1 << endl;
         cout << list1.getLen() << endl;
 
         cout << "<operators>" << endl;
         if (list0 != list1)
         {
-            cout << "list2 not equal list7" << endl;
+            cout << "list2 not equal list1" << endl;
         }
-        if (list0.isNotEqual(list1))
+        if (not list0.isEqual(list1))
         {
-            cout << "list2 not equal list7" << endl;
+            cout << "list2 not equal list1" << endl;
         }
+        cout << "list0+=list1" << endl;
         list0 += list1;
         cout << list0 << endl;
+        cout << "list0+=15" << endl;
         list0 += 15;
         cout << list0 << endl;
         cout << endl;
