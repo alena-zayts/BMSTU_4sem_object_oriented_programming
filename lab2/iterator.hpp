@@ -164,6 +164,14 @@ ListIter<T> &ListIter<T>::operator=(const ListIter<T> &listIter)
     return *this;
 }
 
+//template <typename T>
+//ListIter<T> &ListIter<T>::operator=(const ListIterBase<T> &listIter)
+//{
+//    this->ptrCur = listIter.ptrCur;
+
+//    return *this;
+//}
+
 template <typename T>
 T &ListIter<T>::operator*()
 {

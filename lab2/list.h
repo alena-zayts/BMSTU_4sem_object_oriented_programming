@@ -20,7 +20,7 @@ public:
     List();
     // явный конструктор-копирование из такого же списка
     explicit List(const List<T> &someList);
-    // конструктор-копирование по указателю-удаляет старый и создает новый
+    // конструктор перемещения: переносит someList на this
     List(List<T> &&someList);
     // конструктор с использованием списка инициализации
     List(std::initializer_list<T> someList);
@@ -40,23 +40,29 @@ public:
     List<T> &operator=(List<T> &&someList);
     List<T> &operator=(std::initializer_list<T> someList);
     // с 1 итератором
-    template <typename T_>
+    template <typename T_>                                //new
     List<T> &operator=(T_ begin);
 
+    // возвращают новый список
     // перегрузка оператора сложения и
     // add~+data
     List<T> add(const T &data) const;
     List<T> operator+(const T &data) const;
     // addlist~+list
     List<T> addlist(const List<T> &someList) const;
-    List<T> operator+(const List<T> &somelist) const;
+    template <typename T_>
+    List<T> addlist(T_ begin, T_ end) const;                //new
+    List<T> operator+(const List<T> &someList) const;
 
+    // изменяют текущий список и возвращают ссылку на себя
     // перегрузка оператора сложения с присваиванием и
     // append~+=data
     List<T> &append(const T &data);
     List<T> &operator+=(const T &data);
     // extend~+=List
-    List<T> &extend(const List<T> &ListToAdd);
+    List<T> &extend(const List<T> &someList);
+    template <typename T_>
+    List<T> &extend(T_ begin, T_ end);                       //new
     List<T> &operator+=(const List<T> &someList);
 
     // перегрузка оператора равенства и isEqual~==
@@ -66,16 +72,32 @@ public:
     bool isNotEqual(const List<T> &someList) const;
     bool operator!=(const List<T> &someList) const;
 
-    // вставка и удаление по месту
-    List<T> &insert(const T &data, const ListIter<T> &iter);
-    const T remove(const ListIter<T> &iter);
-    // удаление последнего
-    const T pop();
+    // вставка                                              // newwwwwwwwwwwwwwwwwwwww
+    List<T> &pushHead(const T &data);
+    List<T> &pushHead(const T *arr, const int len);
+    template <typename T_>
+    List<T> &pushHead(T_ begin, T_ end);
+    List<T> &pushTail(const T &data);
+    List<T> &pushTail(const T *arr, const int len);
+    template <typename T_>
+    List<T> &pushTail(T_ begin, T_ end);
+    List<T> &pushIter(const T &data, const ListIter<T> &iter); // (not new)
+    List<T> &pushIter(const T *arr, const int len, const ListIter<T> &iter);
+    template <typename T_>
+    List<T> &pushIter(T_ begin, T_ end, const ListIter<T> &iter);
+
+    // удаление
+    const T popHead();                                              // new
+    const T popTail();                                              // new
+    const T popIter(ListIter<T> &iter);
+    void remove(const ListIter<T> &begin, const ListIter<T> &end);  //new
 
     // создание итераторов
     ListIter<T> begin();
     ListIter<T> end();
     // константные итераторы
+    ConstListIter<T> begin() const; // добавить реализацию
+    ConstListIter<T> end() const;   // добавить реализацию
     ConstListIter<T> c_begin() const;
     ConstListIter<T> c_end() const;
 
