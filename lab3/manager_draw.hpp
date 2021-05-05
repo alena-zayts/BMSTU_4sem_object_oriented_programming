@@ -1,8 +1,6 @@
 #ifndef MANAGER_DRAW_HPP
 #define MANAGER_DRAW_HPP
 
-//#include <QGraphicsScene>
-
 #include "visitor.hpp"
 #include "manager_base.hpp"
 #include "matrix.hpp"
