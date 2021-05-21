@@ -5,11 +5,11 @@
 #include "link.hpp"
 #include "point.hpp"
 
-class BaseSourceLoader
+class BaseModelSource
 {
 public:
-    BaseSourceLoader() = default;
-    ~BaseSourceLoader() noexcept = default;
+    BaseModelSource() = default;
+    ~BaseModelSource() noexcept = default;
 
     virtual void open(std::string source_name) = 0;
     virtual void close() = 0;

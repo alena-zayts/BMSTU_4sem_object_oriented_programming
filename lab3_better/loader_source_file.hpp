@@ -7,11 +7,11 @@
 #include "link.hpp"
 #include "loader_source_base.hpp"
 
-class FileLoader : public BaseSourceLoader
+class FileModelSource : public BaseModelSource
 {
 public:
-    FileLoader() = default;
-    ~FileLoader();
+    FileModelSource() = default;
+    ~FileModelSource();
 
     void open(std::string source_name) override;
     void close() override;

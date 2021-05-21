@@ -7,7 +7,7 @@
 Controller::Controller() : draw_manager_(std::make_shared<DrawManager>())
 {
     std::shared_ptr<BaseModelBuilder> bld(std::make_shared<ModelBuilder>());
-    std::shared_ptr<BaseModelLoader> uploader_(std::make_shared<ModelLoader>(bld));
+    std::shared_ptr<BaseLoadController> uploader_(std::make_shared<ModelLoadController>(bld));
 
     this->uploader_ = uploader_;
 }

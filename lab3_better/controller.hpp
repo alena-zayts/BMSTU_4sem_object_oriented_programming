@@ -21,7 +21,7 @@ public:
     SceneManager scene_manager_;
     TransformManager transform_manager_;
     std::shared_ptr<DrawManager> draw_manager_;
-    std::shared_ptr<BaseModelLoader> uploader_;
+    std::shared_ptr<BaseLoadController> uploader_;
 
 private:
     Controller();

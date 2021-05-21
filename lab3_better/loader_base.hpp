@@ -8,15 +8,15 @@
 #include "object_model.hpp"
 #include "loader_source_base.hpp"
 
-class BaseModelLoader
+class BaseLoadController
 {
 public:
-    virtual ~BaseModelLoader() = default;
-    virtual std::shared_ptr<Model> LoadModel(std::string model_name, std::string source_name) = 0;
-    virtual void SetLoader(std::shared_ptr<BaseSourceLoader> loader) = 0;
+    virtual ~BaseLoadController() = default;
+    virtual std::shared_ptr<SceneObject> load(std::string model_name, std::string source_name) = 0;
+    virtual void SetSourceLoader(std::shared_ptr<BaseModelSource> loader) = 0;
 
 protected:
-    std::shared_ptr<BaseSourceLoader> loader_;
+    std::shared_ptr<BaseModelSource> source_loader_;
 };
 
 #endif // LOADER_BASE_HPP

@@ -23,8 +23,8 @@ public:
     void Transform(const std::shared_ptr<Matrix<double>> mtr) override;
     void Accept(std::shared_ptr<Visitor> visitor) override;
 
-    std::shared_ptr<Carcass> GetCarcass();
-
+    friend class DrawManager;
+    friend class ModelBuilder;
 
 private:
     std::shared_ptr<Carcass> carcass_;

@@ -4,12 +4,12 @@
 #include "vector.hpp"
 #include "error_loader.hpp"
 
-FileLoader::~FileLoader()
+FileModelSource::~FileModelSource()
 {
     close();
 }
 
-void FileLoader::open(std::string source_name)
+void FileModelSource::open(std::string source_name)
 {
     if (IsOpen())
     {
@@ -25,18 +25,18 @@ void FileLoader::open(std::string source_name)
     }
 }
 
-bool FileLoader::IsOpen() const
+bool FileModelSource::IsOpen() const
 {
     return file_.is_open();
 }
 
-void FileLoader::close()
+void FileModelSource::close()
 {
     file_.close();
     file_.clear();
 }
 
-Vector<Point<double>> FileLoader::ReadPoints()
+Vector<Point<double>> FileModelSource::ReadPoints()
 {
     time_t t_time = time(NULL);
 
@@ -66,7 +66,7 @@ Vector<Point<double>> FileLoader::ReadPoints()
     return points;
 }
 
-Vector<Link> FileLoader::ReadLinks()
+Vector<Link> FileModelSource::ReadLinks()
 {
     time_t t_time = time(NULL);
 

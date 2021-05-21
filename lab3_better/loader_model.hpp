@@ -3,12 +3,12 @@
 
 #include "loader_base.hpp"
 
-class ModelLoader : public BaseModelLoader
+class ModelLoadController : public BaseLoadController
 {
 public:
-    ModelLoader(std::shared_ptr<BaseModelBuilder> bld);
-    std::shared_ptr<Model> LoadModel(std::string model_name, std::string source_name) override;
-    void SetLoader(std::shared_ptr<BaseSourceLoader> loader) override;
+    ModelLoadController(std::shared_ptr<BaseModelBuilder> bld);
+    std::shared_ptr<SceneObject> load(std::string model_name, std::string source_name) override;
+    void SetSourceLoader(std::shared_ptr<BaseModelSource> loader) override;
 
 private:
     std::shared_ptr<BaseModelBuilder> builder_;

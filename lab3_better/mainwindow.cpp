@@ -384,12 +384,12 @@ std::shared_ptr<BaseDrawer> MainWindow::DrawDirector::get_drawer(const char *fp,
     return nullptr;
 }
 
-std::shared_ptr<BaseSourceLoader> MainWindow::SourceDirector::get_loader(const char *fp)
+std::shared_ptr<BaseModelSource> MainWindow::SourceDirector::get_loader(const char *fp)
 {
     MainWindow obj;
     if (obj.readConfigFileSource(fp) == "File")
     {
-        auto loader = std::make_shared<FileLoader>();
+        auto loader = std::make_shared<FileModelSource>();
         return loader;
     }
 

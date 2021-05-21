@@ -12,14 +12,14 @@ void AddCameraCommand::Run(std::shared_ptr<Controller> controller)
 }
 
 
-AddModelCommand::AddModelCommand(std::string model_name, std::string file_name, std::shared_ptr<BaseSourceLoader> loader) : model_name(model_name), file_name(file_name), source_loader(loader) {}
+AddModelCommand::AddModelCommand(std::string model_name, std::string file_name, std::shared_ptr<BaseModelSource> loader) : model_name(model_name), file_name(file_name), source_loader(loader) {}
 
 void AddModelCommand::Run(std::shared_ptr<Controller> controller)
 {
-    controller->uploader_->SetLoader(source_loader);
-    std::shared_ptr<Model> model = controller->uploader_->LoadModel(model_name, file_name);
+    controller->uploader_->SetSourceLoader(source_loader);
+    std::shared_ptr<SceneObject> model = controller->uploader_->load(model_name, file_name);
 
-    controller->scene_manager_.GetScene()->Add(std::shared_ptr<Model>(model));
+    controller->scene_manager_.GetScene()->Add(std::shared_ptr<SceneObject>(model));
 }
 
 RemoveObjectCommand::RemoveObjectCommand(std::string object_name) : object_name_(object_name) {}
