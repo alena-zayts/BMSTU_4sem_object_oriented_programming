@@ -1,0 +1,97 @@
+#include <ctime>
+
+#include "source_loader_file.hpp"
+#include "vector.hpp"
+#include "error_loader.hpp"
+
+FileSourceLoader::~FileSourceLoader()
+{
+    close();
+}
+
+void FileSourceLoader::open(std::string source_name)
+{
+    if (IsOpen())
+    {
+        close();
+    }
+
+    time_t t_time = time(NULL);
+
+    file_.open(source_name);
+    if (!file_)
+    {
+        throw OpenStreamError(__FILE__, typeid(*this).name(), __LINE__, ctime(&t_time));
+    }
+}
+
+bool FileSourceLoader::IsOpen() const
+{
+    return file_.is_open();
+}
+
+void FileSourceLoader::close()
+{
+    file_.close();
+    file_.clear();
+}
+
+Vector<Point<double>> FileSourceLoader::ReadPoints()
+{
+    time_t t_time = time(NULL);
+
+    if (!IsOpen())
+    {
+        throw ReadStreamError(__FILE__, typeid(*this).name(), __LINE__, ctime(&t_time));
+    }
+
+    size_t n_points = 0;
+    file_ >> n_points;
+
+    if (n_points < 1)
+    {
+        throw FileFormatError(__FILE__, typeid(*this).name(), __LINE__, ctime(&t_time));
+    }
+
+    Vector<Point<double>> points(n_points, Point<double>(0, 0, 0));
+
+    for (size_t i = 0; i < n_points; ++i)
+    {
+        if (!(file_ >> points[i]))
+        {
+            throw FileFormatError(__FILE__, typeid(*this).name(), __LINE__, ctime(&t_time));
+        }
+    }
+
+    return points;
+}
+
+Vector<Link> FileSourceLoader::ReadLinks()
+{
+    time_t t_time = time(NULL);
+
+    if (!IsOpen())
+    {
+        throw ReadStreamError(__FILE__, typeid(*this).name(), __LINE__, ctime(&t_time));
+    }
+
+    size_t n_links = 0;
+    file_ >> n_links;
+
+    if (n_links < 1)
+    {
+        throw FileFormatError(__FILE__, typeid(*this).name(), __LINE__, ctime(&t_time));
+    }
+
+    Vector<Link> links(n_links, Link());
+
+    for (size_t i = 0; i < n_links; ++i)
+    {
+        if (!(file_ >> links[i]))
+        {
+            throw FileFormatError(__FILE__, typeid(*this).name(), __LINE__, ctime(&t_time));
+        }
+    }
+
+    return links;
+}

@@ -44,7 +44,7 @@ public:
         friend class MainWindow;
     public:
         SourceDirector() = default;
-        std::shared_ptr<BaseModelSource> get_loader(const char *fp);
+        std::shared_ptr<BaseSourceLoader> get_loader(const char *fp);
     };
 
 private slots:

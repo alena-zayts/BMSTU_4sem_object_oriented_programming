@@ -29,11 +29,6 @@ Model &Model::operator=(Model &&other) noexcept
     return *this;
 }
 
-std::shared_ptr<Carcass> Model::GetCarcass()
-{
-    return carcass_;
-}
-
 void Model::Transform(const std::shared_ptr<Matrix<double>> mtr)
 {
     carcass_->Transform(mtr);

@@ -2,8 +2,9 @@
 #define CONTROLLER_HPP
 
 #include "drawer_base.hpp"
-#include "loader_base.hpp"
+#include "load_controller_base.hpp"
 #include "manager_draw.hpp"
+#include "manager_load.hpp"
 #include "manager_scene.hpp"
 #include "manager_transform.hpp"
 #include "scene.hpp"
@@ -21,7 +22,7 @@ public:
     SceneManager scene_manager_;
     TransformManager transform_manager_;
     std::shared_ptr<DrawManager> draw_manager_;
-    std::shared_ptr<BaseLoadController> uploader_;
+    std::shared_ptr<LoadManager> load_manager_;
 
 private:
     Controller();

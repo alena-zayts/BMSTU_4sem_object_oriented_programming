@@ -9,7 +9,7 @@ CONFIG += c++11
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    builder.cpp \
+    builder_model.cpp \
     canvas_qt.cpp \
     carcass.cpp \
     commands.cpp \
@@ -19,11 +19,11 @@ SOURCES += \
     facade.cpp \
     factory_qt.cpp \
     link.cpp \
-    loader_model.cpp \
-    loader_source_file.cpp \
+    load_controller_model.cpp \
     main.cpp \
     mainwindow.cpp \
     manager_draw.cpp \
+    manager_load.cpp \
     manager_sccene.cpp \
     manager_transform.cpp \
     matrix_transform.cpp \
@@ -32,11 +32,12 @@ SOURCES += \
     object_invisible.cpp \
     object_model.cpp \
     object_visible.cpp \
-    scene.cpp
+    scene.cpp \
+    source_loader_file.cpp
 
 HEADERS += \
-    builder.hpp \
-    builder_base.hpp \
+    builder_model.hpp \
+    builder_model_base.hpp \
     canvas_base.hpp \
     canvas_qt.hpp \
     carcass.hpp \
@@ -60,14 +61,13 @@ HEADERS += \
     iterator_usual.hpp \
     iterator_vector.hpp \
     link.hpp \
-    loader_base.hpp \
-    loader_model.hpp \
-    loader_source_base.hpp \
-    loader_source_file.hpp \
+    load_controller_base.hpp \
+    load_controller_model.hpp \
     mainwindow.h \
     mainwindow.hpp \
     manager_base.hpp \
     manager_draw.hpp \
+    manager_load.hpp \
     manager_scene.hpp \
     manager_transform.hpp \
     matrix.hpp \
@@ -82,6 +82,8 @@ HEADERS += \
     point.hpp \
     points_pair.hpp \
     scene.hpp \
+    source_loader_base.hpp \
+    source_loader_file.hpp \
     vector.hpp \
     vector_base.hpp \
     visitor.hpp
