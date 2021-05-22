@@ -16,6 +16,11 @@ void ModelBuilder::BuildLinks(const Vector<Link> &links)
     model->carcass_->GetLinks() = links;
 }
 
+void ModelBuilder::BuildCentre(const Point<double> centre)
+{
+    model->carcass_->GetCentre() = centre;
+}
+
 std::shared_ptr<Model> ModelBuilder::GetModel()
 {
     return model;

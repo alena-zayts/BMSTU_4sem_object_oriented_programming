@@ -7,6 +7,7 @@
 class MoveMatrix : public Matrix<double>
 {
 public:
+    bool IsMove() override {return true;};
     MoveMatrix(double x, double y, double z);
 };
 
@@ -14,6 +15,7 @@ public:
 class ScaleMatrix : public Matrix<double>
 {
 public:
+    bool IsMove() override {return false;};
     ScaleMatrix(double x, double y, double z);
 };
 
@@ -21,6 +23,7 @@ public:
 class RotateOxMatrix : public Matrix<double>
 {
 public:
+    bool IsMove() override {return false;};
     RotateOxMatrix(double angle);
 };
 
@@ -28,6 +31,7 @@ public:
 class RotateOyMatrix : public Matrix<double>
 {
 public:
+    bool IsMove() override {return false;};
     RotateOyMatrix(double angle);
 };
 
@@ -35,6 +39,7 @@ public:
 class RotateOzMatrix : public Matrix<double>
 {
 public:
+    bool IsMove() override {return false;};
     RotateOzMatrix(double angle);
 };
 

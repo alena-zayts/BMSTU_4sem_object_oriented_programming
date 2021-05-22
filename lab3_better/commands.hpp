@@ -5,27 +5,30 @@
 #include "controller.hpp"
 #include "factory_abstract.hpp"
 #include "drawer_base.hpp"
-#include "source_loader_base.hpp"
+#include "model_source_loader_base.hpp"
+#include "camera_source_loader_base.hpp"
 
 class AddCameraCommand : public BaseCommand
 {
 public:
-    explicit AddCameraCommand(std::string name);
+    explicit AddCameraCommand(std::string model_name, std::string file_name, std::shared_ptr<BaseCameraSourceLoader> loader);
     void Run(std::shared_ptr<Controller> controller) override;
 
 private:
-    std::string name_;
+    std::shared_ptr<BaseCameraSourceLoader> source_loader;
+    std::string camera_name;
+    std::string file_name;
 };
 
 class AddModelCommand : public BaseCommand
 {
 public:
-    explicit AddModelCommand(std::string model_name, std::string file_name, std::shared_ptr<BaseSourceLoader> loader);
+    explicit AddModelCommand(std::string model_name, std::string file_name, std::shared_ptr<BaseModelSourceLoader> loader);
 
     void Run(std::shared_ptr<Controller> controller) override;
 
 private:
-    std::shared_ptr<BaseSourceLoader> source_loader;
+    std::shared_ptr<BaseModelSourceLoader> source_loader;
     std::string model_name;
     std::string file_name;
 };

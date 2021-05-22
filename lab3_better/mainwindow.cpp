@@ -3,7 +3,8 @@
 
 #include "canvas_qt.hpp"
 #include "factory_qt.hpp"
-#include "source_loader_file.hpp"
+#include "model_source_loader_file.hpp"
+#include "camera_source_loader_file.hpp"
 #include "error_new.hpp"
 #include "error_loader.hpp"
 #include <fstream>
@@ -31,6 +32,7 @@ void MainWindow::render()
         return;
     }
 
+
     time_t t_time = time(NULL);
 
     std::shared_ptr<AbstractFactory> factory;
@@ -41,6 +43,7 @@ void MainWindow::render()
         throw OpenStreamError(__FILE__, typeid(*this).name(), __LINE__, ctime(&t_time));
     }
 
+
     std::shared_ptr<BaseCommand> command(new DrawCommand(drawer));
     facade_viewer->RunCommand(command);
 
@@ -49,29 +52,40 @@ void MainWindow::render()
 
 void MainWindow::on_pushButton_AddCamera_clicked()
 {
-    std::string cam_name = std::string("camera_") + std::to_string(++index_camera);
+    QString file = QFileDialog::getOpenFileName(this,
+                                                QString::fromUtf8("Открыть файл"),
+                                                QDir::currentPath(),
+                                                "text files (*.txt)");
+    if (file.isEmpty())
+    {
+        return;
+    }
+
+    std::string camera_name = std::string("camera_") + std::to_string(++index_camera);
+    std::string file_name = file.toLocal8Bit().constData();
+
+    time_t t_time = time(NULL);
+
+    auto loader = sdirector.get_loader_camera("C:/msys64/home/alena/oop_lab32/config.cfg");
+
+    if (loader == nullptr)
+    {
+        throw OpenStreamError(__FILE__, typeid(*this).name(), __LINE__, ctime(&t_time));
+    }
 
     try
     {
-        std::shared_ptr<BaseCommand> command(new AddCameraCommand(cam_name));
+        std::shared_ptr<BaseCommand> command(new AddCameraCommand(camera_name, file_name, loader));
         facade_viewer->RunCommand(command);
-        ui->comboBoxCamera->addItem(cam_name.c_str());
-
-        if (ui->comboBoxCamera->count() == 1)
-        {
-            std::shared_ptr<BaseCommand> command(new SetCameraCommand(cam_name));
-            facade_viewer->RunCommand(command);
-            if (ui->comboBoxModel->count() > 0)
-            {
-                render();
-            }
-        }
+        ui->comboBoxCamera->addItem(camera_name.c_str());
+        on_pushButton_SetCamera_clicked();
     }
     catch (DefaultException &ex)
     {
         QMessageBox::warning(this, "Error message", QString(ex.what()));
     }
 }
+
 
 void MainWindow::on_pushButton_AddModel_clicked()
 {
@@ -89,7 +103,7 @@ void MainWindow::on_pushButton_AddModel_clicked()
 
     time_t t_time = time(NULL);
 
-    auto loader = sdirector.get_loader("C:/msys64/home/alena/oop_lab32/config.cfg");
+    auto loader = sdirector.get_loader_model("C:/msys64/home/alena/oop_lab32/config.cfg");
 
     if (loader == nullptr)
     {
@@ -384,12 +398,24 @@ std::shared_ptr<BaseDrawer> MainWindow::DrawDirector::get_drawer(const char *fp,
     return nullptr;
 }
 
-std::shared_ptr<BaseSourceLoader> MainWindow::SourceDirector::get_loader(const char *fp)
+std::shared_ptr<BaseModelSourceLoader> MainWindow::SourceDirector::get_loader_model(const char *fp)
 {
     MainWindow obj;
     if (obj.readConfigFileSource(fp) == "File")
     {
-        auto loader = std::make_shared<FileSourceLoader>();
+        auto loader = std::make_shared<FileModelSourceLoader>();
+        return loader;
+    }
+
+    return nullptr;
+}
+
+std::shared_ptr<BaseCameraSourceLoader> MainWindow::SourceDirector::get_loader_camera(const char *fp)
+{
+    MainWindow obj;
+    if (obj.readConfigFileSource(fp) == "File")
+    {
+        auto loader = std::make_shared<FileCameraSourceLoader>();
         return loader;
     }
 

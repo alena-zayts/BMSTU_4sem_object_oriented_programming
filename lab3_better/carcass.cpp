@@ -11,6 +11,11 @@ Vector<Link> &Carcass::GetLinks()
     return links_;
 }
 
+Point<double> &Carcass::GetCentre()
+{
+    return centre_;
+}
+
 Vector<Point<double>> &Carcass::GetPoints()
 {
     return points_;
@@ -31,9 +36,16 @@ Vector<Pair<Point<double>, Point<double>>> Carcass::GetEdges()
 
 void Carcass::Transform(const std::shared_ptr<Matrix<double>> mtr)
 {
-    for (int i = 0; i < points_.getLen(); i++)
+    if (mtr->IsMove())
     {
-        points_[i].Transform(mtr);
+        centre_.Transform(mtr);
+    }
+    else
+    {
+        for (int i = 0; i < points_.getLen(); i++)
+        {
+            points_[i].Transform(mtr);
+        }
     }
 }
 

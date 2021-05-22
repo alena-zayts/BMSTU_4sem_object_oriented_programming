@@ -18,11 +18,13 @@ public:
     Vector<Point<double>> &GetPoints();
     Vector<Link> &GetLinks();
     Vector<Pair<Point<double>, Point<double>>> GetEdges();
+    Point<double> &GetCentre();
     void Transform(const std::shared_ptr<Matrix<double>> mtr);
 
 private:
     Vector<Point<double>> points_;
     Vector<Link> links_;
+    Point<double> centre_;
 };
 
 #endif // CARCASS_HPP

@@ -15,6 +15,7 @@ public:
     void Accept(std::shared_ptr<Visitor> visitor) override; // для visitor
 
     friend class DrawManager;
+    friend class CameraBuilder;
 
 private:
     Point<double> position;

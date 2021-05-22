@@ -65,7 +65,7 @@ void DrawManager::Visit(Model &model)
     {
         ProjectPoint(edge.get_first());
         ProjectPoint(edge.get_second());
-        drawer_->drawLine(edge.get_first(), edge.get_second());
+        drawer_->drawLine(edge.get_first() + carcass->GetCentre(), edge.get_second() + carcass->GetCentre());
     }
 }
 

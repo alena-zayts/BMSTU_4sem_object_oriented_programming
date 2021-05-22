@@ -27,6 +27,7 @@ public:
     void Transform(const std::shared_ptr<Matrix<T>> mtr);
 
     Point &operator+=(const Point &other);
+    Point operator+(const Point &other);
     Point &operator+=(const T &data);
     Point &operator-=(const Point &other);
     Point &operator-=(const T &data);
@@ -142,6 +143,13 @@ Point<T> &Point<T>::operator+=(const Point<T> &other)
     z_ += other.z_;
 
     return *this;
+}
+
+template <typename T>
+Point<T> Point<T>::operator+(const Point<T> &other)
+{
+    Point<T> sum = Point(x_ + other.x_, y_ + other.y_, z_ + other.z_);
+    return sum;
 }
 
 template <typename T>

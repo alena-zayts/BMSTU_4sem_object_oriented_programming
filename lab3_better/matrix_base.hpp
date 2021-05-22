@@ -83,6 +83,7 @@ public:
 
     template <class U>
     friend inline std::ostream &operator<<(std::ostream &, const MatrixBase<U> &);
+    virtual bool IsMove() = 0;
 
 protected:
     size_t n;

@@ -2,26 +2,30 @@
 #include "error_scene.hpp"
 #include "point.hpp"
 #include "load_controller_model.hpp"
+#include "load_controller_camera.hpp"
 #include "builder_model.hpp"
+#include "builder_camera.hpp"
 
-AddCameraCommand::AddCameraCommand(std::string name) : name_(name) {}
+AddCameraCommand::AddCameraCommand(std::string camera_name, std::string file_name, std::shared_ptr<BaseCameraSourceLoader> loader) :
+    camera_name(camera_name), file_name(file_name), source_loader(loader) {}
 
 void AddCameraCommand::Run(std::shared_ptr<Controller> controller)
 {
-    auto camera = new Camera(name_);
-
-    controller->scene_manager_.GetScene()->Add(std::shared_ptr<Camera>(camera));
+    std::shared_ptr<BaseCameraBuilder> bld(std::make_shared<CameraBuilder>());
+    auto load_controller = std::make_shared<CameraLoadController>(bld, source_loader);
+    controller->load_manager_->set_loader(load_controller);
+    std::shared_ptr<SceneObject> camera = controller->load_manager_->load(camera_name, file_name);
+    controller->scene_manager_.GetScene()->Add(std::shared_ptr<SceneObject>(camera));
 }
 
 
-AddModelCommand::AddModelCommand(std::string model_name, std::string file_name, std::shared_ptr<BaseSourceLoader> loader) :
+AddModelCommand::AddModelCommand(std::string model_name, std::string file_name, std::shared_ptr<BaseModelSourceLoader> loader) :
     model_name(model_name), file_name(file_name), source_loader(loader) {}
 
 void AddModelCommand::Run(std::shared_ptr<Controller> controller)
 {
     std::shared_ptr<BaseModelBuilder> bld(std::make_shared<ModelBuilder>());
-    auto load_controller = std::make_shared<ModelLoadController>(bld);
-    load_controller->SetSourceLoader(source_loader);
+    auto load_controller = std::make_shared<ModelLoadController>(bld, source_loader);
     controller->load_manager_->set_loader(load_controller);
     std::shared_ptr<SceneObject> model = controller->load_manager_->load(model_name, file_name);
     controller->scene_manager_.GetScene()->Add(std::shared_ptr<SceneObject>(model));
